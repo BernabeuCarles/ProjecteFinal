@@ -1,0 +1,28 @@
+version: '3'
+services:
+   odoo:
+     image: odoo:16
+     restart: always
+     ports:
+       - "8069:8069"
+     links:
+       - db
+     environment:
+       - USER=odoo
+       - PASSWORD=odoo
+     volumes:
+       - ./extra-addons:/mnt/extra-addons
+       - ./config:/etc/odoo
+       - ./logs:/var/log/odoo
+   db:
+     image: postgres:14
+     restart: always
+     environment:
+       - POSTGRES_USER=odoo
+       - POSTGRES_PASSWORD=odoo
+       - POSTGRES_DB=postgres
+       - PGDATA=/var/lib/postgresql/data/pgdata
+     volumes:
+       - ./datos_db:/var/lib/postgresql/data/
+     ports:
+       - "5432:5432"
